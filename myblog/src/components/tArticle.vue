@@ -52,13 +52,13 @@
 		name :'tArticle',
 		data(){
 			return{
-				article:this.$route.params.oneArticle,
-				usercomment:'',
+				article:this.$route.params.oneArticle,    //主页传过来的文章
+				usercomment:'',							//用户评论
 				comments:'',
-				status:false
+				status:false							//点赞状态（还没有写好）
 			}
 		},
-		created:function(){
+		created:function(){								//页面创建时把文章的评论请求下来
 			var params = new URLSearchParams();
 			params.append('title',this.$route.params.oneArticle.title);
 			this.axios.post('http://localhost:7001/commentsList',params).then((res)=>{
@@ -68,21 +68,21 @@
 			
 			
 		},
-		beforeDestroy:function(){
+		beforeDestroy:function(){					//在关闭页码后判断是否点赞然后更新数据库点赞数
 			if(this.status == true){
-				console.log(this.status);
+				this.status == false;
 			}
 		},
 		methods: {
-			submit(){
-				if(false == this.$cookies.isKey('username') ){
+			submit(){						//
+				if(false == this.$cookies.isKey('username') ){		//先登录才能评论
 					alert("请先登录");
 				}
-				else if(document.getElementById("writeComment").innerHTML == ''){
+				else if(document.getElementById("writeComment").innerHTML == ''){	///评论为空不能提交
 					alert("你还没有评论");
 				}
 				else{
-					this.usercomment=document.getElementById("writeComment").innerHTML;
+					this.usercomment=document.getElementById("writeComment").innerHTML;		//评论的提交
 					var params = new URLSearchParams();
 					let nowtime = new Date(+new Date() + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '');
 					params.append('user', this.$cookies.get('username'));
@@ -92,17 +92,17 @@
 					params.append('title',this.$route.params.oneArticle.title);
 					this.axios.post('http://127.0.0.1:7001/comments', params,
 					).then(res => {
-						if(res.data.code == 1) {
+						if(res.data.code == 1) {		
 						alert("评论成功");
 						document.getElementById("writeComment").innerHTML = '';
-						var thiscomment = {
+						var thiscomment = {						//更新评论列表
 							user:this.$cookies.get('username'),
 							comment:this.usercomment,
 							time:nowtime,
 							Beuser:this.$route.params.oneArticle.user,
 							title:this.$route.params.oneArticle.title,
 						}
-						this.comments.push(thiscomment);
+						this.comments.push(thiscomment);			//插入到文章评论列表里面	
 						}
 					})
 				}

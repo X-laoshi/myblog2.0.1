@@ -53,33 +53,28 @@ export default {
   name: 'index',
 	data() {
 			return {
-				kongge:'    ',
-				articels:'',
-				items:'',
-				showArticels:'',
-				index:5,
-				all:'',
-				cur:1,
+				articels:'',  //文章列表
+				showArticels:'',	//显示的文章列表
+				index:5,			//页码
+				all:'',			//页码总数
+				cur:1,			//当前页码
 			}
 	},  
 
-   created:function(){
+   created:function(){				//页面创建时去申请文章下来
 		this.axios.post('http://localhost:7001/articleList').then((res)=>{
 			this.articels = res.data.result;
 			console.log(this.articels);
-			this.all=Math.ceil(res.data.result.length/4);
-			this.cur=1;
-			
-			this.showArticels=this.articels.slice((this.cur-1)*4,(this.cur-1)*4+5);
+			this.all=Math.ceil(res.data.result.length/4);		//一页四个文章 文章总是/4向上取整
+			this.cur=1;											//当前页码
+			this.showArticels=this.articels.slice((this.cur-1)*4,(this.cur-1)*4+5);		//显示的四个文章
 			// this.index.push(i+1);
 			
 		})
-		console.log( this.$cookies.isKey('username'));
-		console.log( this.$cookies.isKey('psd'));
 	},
 	methods:{
 		pageClick(){
-			this.showArticels=this.articels.slice((this.cur-1)*4,(this.cur-1)*4+5);
+			this.showArticels=this.articels.slice((this.cur-1)*4,(this.cur-1)*4+5);		//改变显示页
 		},
 		btnClick: function(data){//页码点击事件
 			if(data != this.cur){
@@ -87,12 +82,12 @@ export default {
 			this.showArticels=this.articels.slice((this.cur-1)*4,(this.cur-1)*4+5);
 			}
 		},
-		goto(s){
+		goto(s){			//进入该文章
 			let oneArticle = s; 
-			this.$router.push({name:'tArticle' ,params:{oneArticle}});
+			this.$router.push({name:'tArticle' ,params:{oneArticle}});  //把该文章传到tArticle里面（现在还有问题，不能刷新）
 		},
 		gowrite(){
-			if(false == this.$cookies.isKey('username') ){
+			if(false == this.$cookies.isKey('username') ){			//写文章要检查是否登录
 				alert("请先登录");
 			}
 			else{
@@ -144,10 +139,10 @@ export default {
 		background-color:rgba(184, 200, 255, 0.2);
 	}
 	li {
-	list-style: none ;
+		list-style: none ;
 	}
 	a {
-	text-decoration: none;
+		text-decoration: none;
 	}
 	.nav{
 		width:800px;
@@ -162,18 +157,18 @@ export default {
 		padding-top:2px;
 	}
 	.nav a{
-	height: 33px;
-	padding-left: 10px;
-	color: #000000;
-	display: block;
-	line-height: 33px;
-	font-weight: 700;
-	font-size:14px;
+		height: 33px;
+		padding-left: 10px;
+		color: #000000;
+		display: block;
+		line-height: 33px;
+		font-weight: 700;
+		font-size:14px;
 	}
 	.nav span {
-	height: 33px;
-	display: block;
-	padding-right: 10px;
+		height: 33px;
+		display: block;
+		padding-right: 10px;
 	}
 	#wirte{
 		height: 30px;
@@ -191,18 +186,18 @@ export default {
 	ul.pagination li {display: inline;}
 	
 	ul.pagination li a {
-	color: black;
-	float: left;
-	padding: 8px 16px;
-	text-decoration: none;
-	transition: background-color .3s;
-	border: 1px solid #ddd;
+		color: black;
+		float: left;
+		padding: 8px 16px;
+		text-decoration: none;
+		transition: background-color .3s;
+		border: 1px solid #ddd;
 	}
 	
 	ul.pagination li a.active {
-	background-color: #4CAF50;
-	color: white;
-	border: 1px solid #4CAF50;
+		background-color: #4CAF50;
+		color: white;
+		border: 1px solid #4CAF50;
 	}
 	
 	ul.pagination li a:hover:not(.active) {background-color: #ddd;}
@@ -220,38 +215,38 @@ export default {
 		width: 800px;
 	}
 	ul,li{
-	margin: 0px;
-	padding: 0px;
+		margin: 0px;
+		padding: 0px;
 	}
 	li{
-	list-style: none
+		list-style: none
 	}
 	.page-bar li:first-child>a {
-	margin-left: 0px
+		margin-left: 0px
 	}
 	.page-bar a{
-	border: 1px solid #ddd;
-	text-decoration: none;
-	position: relative;
-	float: left;
-	padding: 6px 12px;
-	margin-left: -1px;
-	line-height: 1.42857143;
-	color: #5D6062;
-	cursor: pointer;
-	margin-right: 20px;
+		border: 1px solid #ddd;
+		text-decoration: none;
+		position: relative;
+		float: left;
+		padding: 6px 12px;
+		margin-left: -1px;
+		line-height: 1.42857143;
+		color: #5D6062;
+		cursor: pointer;
+		margin-right: 20px;
 	}
 	.page-bar a:hover{
-	background-color: #eee;
+		background-color: #eee;
 	}
 	.page-bar a.banclick{
-	cursor:not-allowed;
+		cursor:not-allowed;
 	}
 	.page-bar .active a{
-	color: #fff;
-	cursor: default;
-	background-color: #E96463;
-	border-color: #E96463;
+		color: #fff;
+		cursor: default;
+		background-color: #E96463;
+		border-color: #E96463;
 	}
 	.page-bar i{
 	font-style:normal;
